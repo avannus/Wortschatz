@@ -7,31 +7,32 @@ import java.util.Scanner;
 public class Wortimporteur {
 
     public static void main(String[] args) throws FileNotFoundException {
-        Scanner scan = new Scanner(new File("C:\\Users\\avann\\IdeaProjects\\Wortschatz\\src\\Neue Wörter.txt"));
+        Scanner fileScan = new Scanner(new File("C:\\Users\\avann\\IdeaProjects\\Wortschatz\\src\\Neue Wörter.txt")), inputScan = new Scanner(System.in);
         PrintWriter pw = new PrintWriter(new File("C:\\Users\\avann\\IdeaProjects\\Wortschatz\\src\\sortierte Wörter"));
-        String currentLine;
-        while (scan.hasNext()) {
-            currentLine = scan.nextLine();
-            if (!currentLine.isBlank()) {
-//                System.out.print(currentLine);
-                if (currentLine.substring(0, 4).equals("der ")
-                        || currentLine.substring(0, 4).equals("die ")
-                        || currentLine.substring(0, 4).equals("das ")) {
-                    Nomen newNoun = new Nomen(currentLine.substring(0, 3)
-                            , currentLine.substring(4, currentLine.indexOf(" ", 4)) //noun
-                            , currentLine.substring(currentLine.indexOf("[") + 1, currentLine.indexOf("]")) //plural
-                            , currentLine.substring(currentLine.indexOf("]") + 2)); //
-                    System.out.println(newNoun.toString());
-                } else if (currentLine.contains("|")) { //verb
-                    Verb newVerb = new Verb(currentLine.substring(0, currentLine.indexOf("[") - 1)
-                            , currentLine.substring(currentLine.indexOf("[") + 1, currentLine.indexOf("|") - 1)
-                            , currentLine.substring(currentLine.indexOf("|") + 2, currentLine.indexOf("]"))
-                            , currentLine.substring(currentLine.indexOf("]") + 2));
-                    System.out.println(newVerb.toString());
+        String fileLineInput;
+        while (fileScan.hasNext()) {
+            fileLineInput = fileScan.nextLine();
+            if (!fileLineInput.isBlank()) {
+                BaseWord newWord;
+                if (fileLineInput.substring(0, 4).equals("der ")
+                        || fileLineInput.substring(0, 4).equals("die ")
+                        || fileLineInput.substring(0, 4).equals("das ")) {
+                    newWord = new Nomen(fileLineInput); //definition
+                } else if (fileLineInput.contains("|")) { //verb
+                    newWord = new Verb(fileLineInput);
                 } else { //not noun or verb
-                    Other newOther = new Other(currentLine.substring(0, currentLine.indexOf(" "))
-                            , currentLine.substring(currentLine.indexOf(" ")+1));
-                    System.out.println(newOther.toString());
+                    newWord = new BaseWord(fileLineInput);
+                }
+                System.out.println("Is this correct: \n\n" + newWord.toString() + "\n\n(only accepts \"n\" for no if wrong, otherwise type anything)");
+                String inputString = inputScan.nextLine();
+                if (inputString.toLowerCase().equals("n")) {
+                    System.out.println("Would you like to fix this or skip this(f/s)");
+                    inputString = inputScan.nextLine();
+                    if(inputString.toLowerCase().equals("f")){
+                        //TODO manual input
+                    }
+                } else {
+                    System.out.println("accepted.");
                 }
             }
         }

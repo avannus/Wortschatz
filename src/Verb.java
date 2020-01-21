@@ -1,20 +1,25 @@
-public class Verb {
+public class Verb extends BaseWord {
 
-    private String baseWord, pastA, pastB, meaning;
+    String pastA, pastB;
 
     Verb(String baseWord, String pastA, String pastB, String meaning) {
-        this.baseWord = baseWord;
+        super(baseWord, meaning);
         this.pastA = pastA;
         this.pastB = pastB;
-        this.meaning = meaning;
+    }
+
+    Verb(String fileLineInput) {
+        this(fileLineInput.substring(0, fileLineInput.indexOf("[") - 1)
+                , fileLineInput.substring(fileLineInput.indexOf("[") + 1, fileLineInput.indexOf("|") - 1)
+                , fileLineInput.substring(fileLineInput.indexOf("|") + 2, fileLineInput.indexOf("]"))
+                , fileLineInput.substring(fileLineInput.indexOf("]") + 2));
     }
 
     @Override
     public String toString() {
-        return "VERB. Word: " + baseWord
-                + ", pastA: " + pastA
-                + ", pastB: " + pastB
-                + ", Meaning: " + meaning;
+        return super.toString()
+                + "\npastA: " + pastA
+                + "\npastB: " + pastB;
     }
 
 }
