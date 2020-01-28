@@ -1,3 +1,3 @@
-public enum Wortart {
+public enum WordType {
     NOUN, VERB, OTHER
 }
